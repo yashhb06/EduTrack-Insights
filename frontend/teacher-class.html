@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTrack - Teacher Class Details</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .d-flex {
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #6ba748;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .sidebar h2, .sidebar a {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+        .sidebar a {
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .sidebar a:hover {
+            color: #ddd;
+        }
+        .content {
+            padding: 40px;
+            flex-grow: 1;
+        }
+        h2 {
+            color: #343a40;
+        }
+        .class-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .menu-bar {
+            display: flex;
+        }
+        .menu-bar button {
+            margin-right: 10px;
+        }
+        .assignment-card, .submission-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e2e2;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+        }
+        .assignment-card:hover, .submission-card:hover {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        .assignment-btn {
+            margin-top: 10px;
+        }
+        .submission-section h4 {
+            margin-top: 30px;
+        }
+        .submission-btn {
+            margin-top: 10px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="d-flex">
+        <div class="sidebar">
+            <h2 class="text-white">EduTrack Insights</h2>
+            <a href="teacher.html">Home</a>
+            <a href="profile.html">Profile</a>
+            <a href="classes.html">Classes</a>
+            <a href="JoinClass.html">Join/Create Classes</a>
+
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <div class="class-header">
+                <h2 id="class-name">Class Name: </h2>
+            </div>
+
+            <!-- Create Assignment Button -->
+            <div class="mt-4">
+                <button class="btn btn-success" onclick="location.href='assignment.html'">Create Assignment</button>
+            </div>
+
+            <!-- Assignments Section -->
+            <div class="form-section mt-4">
+                <h4>Assignments</h4>
+
+                <!-- Assignment Cards -->
+                <div class="assignment-card">
+                    <h5>Homework 1</h5>
+                    <p>Due Date: <strong>October 25, 2024</strong></p>
+                    <button class="btn btn-info assignment-btn" data-toggle="modal" data-target="#viewSubmissionsHomework1">View Submissions</button>
+                    <button class="btn btn-danger assignment-btn" onclick="deleteAssignment()">Delete Assignment</button>
+                </div>
+                <div class="assignment-card">
+                    <h5>Project Proposal</h5>
+                    <p>Due Date: <strong>November 5, 2024</strong></p>
+                    <button class="btn btn-info assignment-btn" data-toggle="modal" data-target="#viewSubmissionsProposal">View Submissions</button>
+                    <button class="btn btn-danger assignment-btn" onclick="deleteAssignment()">Delete Assignment</button>
+                </div>
+                <div class="assignment-card">
+                    <h5>Midterm Exam</h5>
+                    <p>Due Date: <strong>November 15, 2024</strong></p>
+                    <button class="btn btn-info assignment-btn" data-toggle="modal" data-target="#viewSubmissionsMidterm">View Submissions</button>
+                    <button class="btn btn-danger assignment-btn" onclick="deleteAssignment()">Delete Assignment</button>
+                </div>
+            </div>
+
+            <!-- Submission Section -->
+            <div class="submission-section">
+                <h4>Student Submissions</h4>
+
+                <!-- Submission Cards -->
+                <div class="submission-card">
+                    <h5>John Doe - Homework 1</h5>
+                    <p>Uploaded on: <strong>October 22, 2024</strong></p>
+                    <button class="btn btn-primary submission-btn">View Submission</button>
+                    <button class="btn btn-success submission-btn">Grade</button>
+                </div>
+                <div class="submission-card">
+                    <h5>Jane Smith - Project Proposal</h5>
+                    <p>Uploaded on: <strong>November 3, 2024</strong></p>
+                    <button class="btn btn-primary submission-btn">View Submission</button>
+                    <button class="btn btn-success submission-btn">Grade</button>
+                </div>
+                <div class="submission-card">
+                    <h5>Michael Lee - Midterm Exam</h5>
+                    <p>Uploaded on: <strong>November 13, 2024</strong></p>
+                    <button class="btn btn-primary submission-btn">View Submission</button>
+                    <button class="btn btn-success submission-btn">Grade</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Get the class from URL parameter and display
+        function getClassFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const className = params.get('class');
+            document.getElementById('class-name').innerText = "Class Name: " + className.replace(/([A-Z])/g, ' $1').trim();
+        }
+
+        // Call the function on page load
+        window.onload = getClassFromURL;
+
+        // Delete assignment functionality (mockup)
+        function deleteAssignment() {
+            alert('Assignment deleted successfully.');
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

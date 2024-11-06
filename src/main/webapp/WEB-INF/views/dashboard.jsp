@@ -1,0 +1,203 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTrack Insights - Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .d-flex {
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #6ba748;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .sidebar h2, .sidebar a {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+        .sidebar a {
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .sidebar a:hover {
+            color: #ddd;
+        }
+        .content {
+            padding: 40px;
+            flex-grow: 1;
+        }
+        .progress-circle {
+            width: 150px;
+            height: 110px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #343a40;
+            position: relative;
+            display: none; /* Initially hide circles */
+        }
+        .progress-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .progress-title {
+            margin-top: 5px;
+            font-size: 1rem;
+            color: #343a40;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="d-flex">
+        <nav class="sidebar" role="navigation">
+            <h2 class="text-white">EduTrack Insights</h2>
+            <a href="dashboard.jsp">Home</a>
+            <a href="Profile.jsp">Profile</a>
+            <a href="Classes.jsp">Classes</a>
+            <a href="JoinClass.jsp">Join/Create Classes</a>
+        </nav>
+
+        <main class="content">
+            <h2>Student Progress Management</h2>
+            
+            <!-- Team button added here -->
+            <div class="mb-3">
+                <a href="team.jsp" class="btn btn-primary">Team</a>
+            </div>
+
+            <div class="chart-container mt-4">
+                <canvas id="progressChart" width="400" height="200"></canvas>
+            </div>
+
+            <div class="progress-container mt-4">
+                <div class="progress-circle" id="circleProgress1">
+                    <canvas width="100" height="100"></canvas>
+                    <div class="progress-title">Intro to Programming</div>
+                </div>
+                <div class="progress-circle" id="circleProgress2">
+                    <canvas width="100" height="100"></canvas>
+                    <div class="progress-title">Data Structures</div>
+                </div>
+                <div class="progress-circle" id="circleProgress3">
+                    <canvas width="100" height="100"></canvas>
+                    <div class="progress-title">Web Development</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('progressChart').getContext('2d');
+        const classNames = ['Introduction to Programming', 'Data Structures and Algorithms', 'Web Development'];
+        const classColors = {
+            'Introduction to Programming': '#6ba748',
+            'Data Structures and Algorithms': '#007bff',
+            'Web Development': '#ffc107'
+        };
+        const classScores = {
+            'Introduction to Programming': [85, 90, 78, 92, 88],
+            'Data Structures and Algorithms': [75, 80, 70, 85, 90],
+            'Web Development': [80, 82, 86, 89, 91]
+        };
+        let labels = ['Test 1', 'Test 2', 'Test 3', 'Test 4', 'Test 5'];
+
+        const progressChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: classNames.map(className => ({
+                    label: className,
+                    data: classScores[className],
+                    borderColor: classColors[className],
+                    borderWidth: 2,
+                    fill: false,
+                }))
+            },
+            options: {
+                plugins: {
+                    datalabels: {
+                        color: '#333',
+                        align: 'top',
+                        formatter: function(value) {
+                            return value.toFixed(1);
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Score'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Tests'
+                        }
+                    }
+                }
+            }
+        });
+
+        function updateAllCircleProgress() {
+            classNames.forEach((className, index) => {
+                const totalTests = classScores[className].length;
+                const totalScore = classScores[className].reduce((a, b) => a + b, 0);
+                const totalPercentage = totalTests > 0 ? (totalScore / (100 * totalTests)) * 100 : 0;
+
+                // Show the circle for the current class only
+                const circleElement = document.getElementById(`circleProgress${index + 1}`);
+                circleElement.style.display = 'flex'; // Show this circle
+
+                createCircleProgress(`circleProgress${index + 1}`, totalPercentage, classColors[className]);
+            });
+        }
+
+        function createCircleProgress(circleId, percentage, color) {
+            const circleCtx = document.getElementById(circleId).querySelector('canvas').getContext('2d');
+            return new Chart(circleCtx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [percentage, 100 - percentage],
+                        backgroundColor: [color, '#e9ecef'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    cutout: '70%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    }
+                }
+            });
+        }
+
+        // Call to initialize progress circles on page load
+        updateAllCircleProgress();
+    </script>
+</body>
+</html>
