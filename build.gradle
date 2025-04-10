@@ -1,5 +1,6 @@
 plugins {
 	id 'java'
+	id 'war'
 	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.1.6'
 	id 'org.hibernate.orm' version '6.5.3.Final'
@@ -14,6 +15,8 @@ java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(22)
 	}
+	sourceCompatibility = '22' // or '21'
+	targetCompatibility = '22' // or '21'
 }
 
 configurations {
@@ -36,11 +39,22 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'javax.persistence:javax.persistence-api:2.2'
 	implementation 'mysql:mysql-connector-java:8.0.32'
+	implementation("org.springframework.boot:spring-boot-starter-web") {
+		exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+	}
+	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+	implementation 'javax.servlet:jstl:1.2'// JSP support
+	implementation 'javax.servlet:javax.servlet-api:3.1.0' // JSTL for JSP pages
 
+}
+war {
+	archiveBaseName = 'edutrack'  // Specify the WAR name
+	version = '1.0.0'                         // Specify the WAR version
 }
 
 hibernate {
 	enhancement {
-		enableAssociationManagement = true
-	}
+		enableAssociationManagement = true	}
 }

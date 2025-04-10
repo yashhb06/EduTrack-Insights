@@ -19,8 +19,11 @@ public class AuthController {
         User user = authService.authenticate(email, password);
         if (user != null) {
             return ResponseEntity.ok("Login successful!");
+
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-        }
+
+    }
     }
 }
+

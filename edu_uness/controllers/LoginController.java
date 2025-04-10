@@ -8,14 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.RequestDispatcher;
 
     @CrossOrigin(origins = "file:///C:/EdutrackInsight/frontend/login.html")
     @RestController
@@ -46,22 +38,6 @@ import javax.servlet.RequestDispatcher;
                 return ResponseEntity.ok("Login successful!");
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-            }
-        }
-        @GetMapping
-        public String showLoginPage() {
-            return "login"; // This will look for login.jsp in /WEB-INF/views/
-        }
-        @WebServlet("/login")
-        public class LoginServlet extends HttpServlet {
-            protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-                String username = request.getParameter("username");
-                String password = request.getParameter("password");
-
-                // Perform login logic here
-
-                request.setAttribute("message", "Login attempt for user: " + username);
-                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         }
 

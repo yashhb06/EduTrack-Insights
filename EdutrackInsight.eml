@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component inherit-compiler-output="true" inheritJdk="true">
+<component inherit-compiler-output="true" jdk="corretto-1.8" jdk_type="JavaSDK">
 	<contentEntry url="file://$MODULE_DIR$">
 		<excludeFolder url="file://$MODULE_DIR$/.gradle"/>
 		<excludeFolder url="file://$MODULE_DIR$/build"/>
 	</contentEntry>
 	<contentEntry url="file://$MODULE_DIR$"/>
+	<levels>
+		<level name="javax.servlet-api-3.1.0-javadoc" value="project"/>
+		<level name="javax.servlet-api-3.1.1" value="project"/>
+	</levels>
 </component>
